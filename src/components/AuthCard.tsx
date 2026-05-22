@@ -17,7 +17,8 @@ function validatePasswordStrength(password: string) {
     if (!/[a-z]/.test(password)) return 'Master password must contain at least one lowercase letter.';
     if (!/[0-9]/.test(password)) return 'Master password must contain at least one digit.';
     if (!/[^A-Za-z0-9]/.test(password)) return 'Master password must contain at least one special character.';
-    return null
+    return null;
+}
 
 type AuthStep = 'verify' | 'vault-choice' | 'unlock' | 'create';
 
