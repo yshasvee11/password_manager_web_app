@@ -1,0 +1,32 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --rule no-unused-vars:off --rule no-irregular-whitespace:off",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "argon2-browser": "^1.18.0",
+    "firebase": "^10.8.0",
+    "lucide-react": "^1.16.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.37.0",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/node": "^24.6.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^9.37.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.9.3",
+    "vite": "^5.1.4"
+  }
+}
