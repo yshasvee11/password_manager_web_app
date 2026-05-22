@@ -1,111 +1,48 @@
-# Zero-Knowledge Password Manager (Web)
+﻿# Password Manager Web App
 
-A production-focused web password manager with a split-key, zero-knowledge design.  
-All encryption/decryption happens in the browser, and the server never receives plaintext vault data.
+A website-only password manager frontend built with React + Vite.
 
-## Tech Stack
-
-- React 18
-- TypeScript
-- Vite
-- Tailwind CSS v4
-- Firebase Authentication
-- Firebase Cloud Firestore
-- Web Crypto API (AES-256-GCM, SHA-256)
-- Argon2id via `argon2-browser` (WASM)
-- `lucide-react` icons
-
-## Security Model (High Level)
-
-- User key is derived from master password using Argon2id.
-- Final encryption key is derived client-side and used with AES-256-GCM.
-- Ciphertext is split:
-  - 60% stored remotely (Firestore)
-  - 40% stored locally (`localStorage`)
-- Neither shard alone is sufficient to decrypt vault data.
-
-## Prerequisites
+## Requirements
 
 - Node.js 18+
-- npm
-- A Firebase project with:
-  - Authentication enabled
-  - Cloud Firestore enabled
+- npm 9+
 
-## Local Development
+## Run On Your Computer (Local Setup)
 
-1. Install dependencies:
-
-```bash
+```powershell
+cd E:\password_manager\website_github
 npm install
-```
-
-2. Create a `.env` file in `website_github/`:
-
-```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
-```
-
-3. Create Firebase config file:
-
-```bash
-copy src\\firebase\\config.example.ts src\\firebase\\config.ts
-```
-
-4. Start the dev server:
-
-```bash
+copy .env.example .env
+# open .env and add your real Firebase/API values
 npm run dev
 ```
 
-5. Open the local URL shown in terminal (usually `http://localhost:5173`).
+After starting, open the local URL shown in terminal (usually `http://localhost:5173`).
 
-## Build For Production
+## Run From GitHub (Fresh Clone)
 
-```bash
-npm run build
+```powershell
+# 1) Clone
+git clone https://github.com/YourUsername/your-repo-name.git
+cd your-repo-name
+
+# 2) Install dependencies
+npm install
+
+# 3) Create env file
+copy .env.example .env
+# then edit .env and add real Firebase/API values
+
+# 4) Run website
+npm run dev
 ```
 
-Preview production build locally:
+## Useful Commands
 
-```bash
-npm run preview
+```powershell
+npm run dev       # start development server
+npm run build     # create production build
+npm run preview   # preview production build locally
+npm run lint      # run eslint
+npm run typecheck # run TypeScript checks
 ```
-
-## Firebase API Key Visibility
-
-Firebase web config values (including API key) are expected to be visible in frontend apps after publish.  
-This is normal for Firebase client SDK usage.
-
-Security should be enforced by:
-
-- Firestore security rules
-- Firebase Auth checks
-- API key restrictions (HTTP referrer restrictions)
-- Firebase App Check
-- Strong client-side cryptography (already used here)
-
-## Scripts
-
-- `npm run dev` - start development server
-- `npm run build` - production build
-- `npm run preview` - preview production build
-- `npm run lint` - lint code
-- `npm run typecheck` - TypeScript type check
-
-## Repository Structure
-
-- `src/auth` - signup/login flows
-- `src/components` - UI components
-- `src/crypto` - cryptographic utilities
-- `src/firebase` - Firebase initialization
-- `src/storage` - split-storage logic
-- `src/hooks` - app hooks (auto-lock, etc.)
-- `public/argon2.wasm` - Argon2 WASM runtime
-

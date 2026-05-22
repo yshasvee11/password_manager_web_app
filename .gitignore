@@ -29,4 +29,3 @@ dist-ssr
 .env.local
 .env.*.local
 src/firebase/config.js
-src/firebase/config.ts

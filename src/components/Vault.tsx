@@ -11,6 +11,15 @@ import { Search, Plus, LogOut, Copy, Edit2, Trash2, Eye, EyeOff, Save, X, KeyRou
 const CATEGORIES = ['All', 'Social', 'Finance', 'Work', 'Email', 'Other'];
 const CATEGORY_COLORS: Record<string, string> = { Social: 'text-[#58a6ff] bg-[#58a6ff]/10 border-[#58a6ff]/30', Finance: 'text-[#2ea043] bg-[#2ea043]/10 border-[#2ea043]/30', Work: 'text-[#d29922] bg-[#d29922]/10 border-[#d29922]/30', Email: 'text-[#bc8cff] bg-[#bc8cff]/10 border-[#bc8cff]/30', Other: 'text-[#8b949e] bg-[#8b949e]/10 border-[#8b949e]/30' };
 
+function validatePasswordStrength(password: string) {
+    if (password.length < 12) return 'Master password must be at least 12 characters.';
+    if (!/[A-Z]/.test(password)) return 'Master password must contain at least one uppercase letter.';
+    if (!/[a-z]/.test(password)) return 'Master password must contain at least one lowercase letter.';
+    if (!/[0-9]/.test(password)) return 'Master password must contain at least one digit.';
+    if (!/[^A-Za-z0-9]/.test(password)) return 'Master password must contain at least one special character.';
+    return null;
+}
+
 function SiteFavicon({ site }: { site: string }) {
     const [imgError, setImgError] = useState(false);
     let domain = site;
@@ -64,7 +73,8 @@ export default function Vault({ userInfo, initialVault, firebaseData: initialFir
     const handleChangeMasterPassword = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!oldPassword || !newPassword) return toast.warning('Please enter both passwords.');
-        if (newPassword.length < 12) return toast.warning('New password must be at least 12 characters.');
+        const strengthError = validatePasswordStrength(newPassword);
+        if (strengthError) return toast.warning(strengthError);
         
         setChangingPassword(true);
         try {
