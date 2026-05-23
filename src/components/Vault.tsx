@@ -226,31 +226,33 @@ export default function Vault({ userInfo, initialVault, firebaseData: initialFir
     return (
         <div className="flex flex-col h-full animate-fade-in">
             {/* Header */}
-            <header className="sticky top-0 z-40 bg-[#0d1117]/80 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-primary/20 rounded-lg border border-primary/30">
-                        <KeyRound className="text-primary w-5 h-5" />
+            <header className="sticky top-0 z-40 bg-[#0d1117]/80 backdrop-blur-xl border-b border-white/5 px-4 sm:px-6 py-4 flex flex-row items-center justify-between gap-2 sm:gap-4">
+                <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="p-1.5 sm:p-2 bg-primary/20 rounded-lg border border-primary/30">
+                        <KeyRound className="text-primary w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">My Vault</h2>
+                    <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">My Vault</h2>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                     <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
                         <div className="w-2 h-2 rounded-full bg-success animate-pulse"></div>
                         <span className="text-sm font-medium text-[#c9d1d9]">{displayName}</span>
                     </div>
                     <button 
                         onClick={() => setShowChangePasswordModal(true)} 
-                        className="hidden md:flex items-center gap-2 px-4 py-2 bg-white/5 text-[#c9d1d9] border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-lg transition-all text-sm font-medium"
+                        className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-white/5 text-[#c9d1d9] border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-lg transition-all text-xs sm:text-sm font-medium"
+                        title="Change Master Password"
                     >
-                        <Lock size={16} />
-                        Change Master Password
+                        <Lock size={14} className="sm:w-4 sm:h-4" />
+                        <span className="hidden md:inline">Change Password</span>
                     </button>
                     <button 
                         onClick={handleLogout} 
-                        className="flex items-center gap-2 px-4 py-2 bg-[#f85149]/10 text-[#f85149] border border-[#f85149]/20 hover:bg-[#f85149]/20 hover:border-[#f85149]/40 rounded-lg transition-all text-sm font-medium"
+                        className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-[#f85149]/10 text-[#f85149] border border-[#f85149]/20 hover:bg-[#f85149]/20 hover:border-[#f85149]/40 rounded-lg transition-all text-xs sm:text-sm font-medium"
+                        title="Lock & Logout"
                     >
-                        <LogOut size={16} />
-                        Lock & Logout
+                        <LogOut size={14} className="sm:w-4 sm:h-4" />
+                        <span className="hidden sm:inline">Lock & Logout</span>
                     </button>
                 </div>
             </header>
@@ -366,34 +368,34 @@ export default function Vault({ userInfo, initialVault, firebaseData: initialFir
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                            <div className="flex items-center gap-4 min-w-0 flex-1">
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                                            <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                                                 <SiteFavicon site={item.site} />
                                                 <div className="min-w-0 flex-1">
                                                     <div className="flex items-center gap-2">
                                                         <h4 className="font-semibold text-white text-base truncate">{item.site}</h4>
                                                         {item.category && item.category !== 'Other' && (
-                                                            <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#8b949e]">{item.category}</span>
+                                                            <span className="hidden sm:inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[#8b949e]">{item.category}</span>
                                                         )}
                                                     </div>
                                                     <p className="text-sm text-[#8b949e] truncate mt-0.5">{item.username}</p>
                                                     
-                                                    <div className={`mt-2 font-mono text-sm tracking-widest text-primary bg-[#0d1117]/80 inline-block px-3 py-1 rounded-md border border-white/5 transition-all duration-300 overflow-hidden ${visiblePassId === item.id ? 'opacity-100 max-h-10' : 'opacity-0 max-h-0 !py-0 !mt-0 !border-transparent'}`}>
+                                                    <div className={`mt-2 font-mono text-xs sm:text-sm tracking-widest text-primary bg-[#0d1117]/80 inline-block px-2 sm:px-3 py-1 rounded-md border border-white/5 transition-all duration-300 overflow-hidden ${visiblePassId === item.id ? 'opacity-100 max-h-10' : 'opacity-0 max-h-0 !py-0 !mt-0 !border-transparent'}`}>
                                                         {item.password}
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
-                                                <button onClick={() => setVisiblePassId(visiblePassId === item.id ? null : item.id)} className="p-2 hover:bg-white/10 text-[#8b949e] hover:text-white rounded-lg transition-colors border border-transparent hover:border-white/10" title={visiblePassId === item.id ? "Hide Password" : "Show Password"}>
+                                            <div className="flex items-center justify-end gap-1 sm:gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
+                                                <button onClick={() => setVisiblePassId(visiblePassId === item.id ? null : item.id)} className="p-2 sm:p-2 hover:bg-white/10 text-[#8b949e] hover:text-white rounded-lg transition-colors border border-transparent hover:border-white/10" title={visiblePassId === item.id ? "Hide Password" : "Show Password"}>
                                                     {visiblePassId === item.id ? <EyeOff size={16} /> : <Eye size={16} />}
                                                 </button>
-                                                <button onClick={() => handleCopyPassword(item.password, item.site)} className="p-2 hover:bg-primary/20 text-[#8b949e] hover:text-primary rounded-lg transition-colors border border-transparent hover:border-primary/20" title="Copy Password">
+                                                <button onClick={() => handleCopyPassword(item.password, item.site)} className="p-2 sm:p-2 hover:bg-primary/20 text-[#8b949e] hover:text-primary rounded-lg transition-colors border border-transparent hover:border-primary/20" title="Copy Password">
                                                     <Copy size={16} />
                                                 </button>
-                                                <button onClick={() => handleStartEdit(item)} className="p-2 hover:bg-white/10 text-[#8b949e] hover:text-white rounded-lg transition-colors border border-transparent hover:border-white/10" title="Edit">
+                                                <button onClick={() => handleStartEdit(item)} className="p-2 sm:p-2 hover:bg-white/10 text-[#8b949e] hover:text-white rounded-lg transition-colors border border-transparent hover:border-white/10" title="Edit">
                                                     <Edit2 size={16} />
                                                 </button>
-                                                <button onClick={() => handleDeleteItem(item.id)} className="p-2 hover:bg-[#f85149]/20 text-[#8b949e] hover:text-[#f85149] rounded-lg transition-colors border border-transparent hover:border-[#f85149]/20" title="Delete">
+                                                <button onClick={() => handleDeleteItem(item.id)} className="p-2 sm:p-2 hover:bg-[#f85149]/20 text-[#8b949e] hover:text-[#f85149] rounded-lg transition-colors border border-transparent hover:border-[#f85149]/20" title="Delete">
                                                     <Trash2 size={16} />
                                                 </button>
                                             </div>

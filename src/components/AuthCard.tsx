@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { performSignupCryptoFlow } from '../auth/signup';
 import { performLoginCryptoFlow } from '../auth/login';
 import {
@@ -136,8 +136,8 @@ export default function AuthCard({ onLoginSuccess, toast }: any) {
     const isVerify = step === 'verify';
 
     return (
-        <div className="flex-1 flex flex-col items-center justify-center p-6 w-full max-w-md mx-auto relative z-10 animate-fade-in">
-            <div className="w-full bg-[#161b22]/70 backdrop-blur-xl border border-white/10 rounded-2xl p-8 sm:p-10 shadow-2xl">
+        <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 w-full max-w-md mx-auto relative z-10 animate-fade-in">
+            <div className="w-full bg-[#161b22]/70 backdrop-blur-xl border border-white/10 rounded-2xl p-6 sm:p-10 shadow-2xl">
                 <div className="flex justify-center mb-6">
                     <div className="w-16 h-16 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary shadow-[0_0_20px_rgba(88,166,255,0.2)]">
                         {isVerify ? <ShieldCheck size={32} /> : <Lock size={32} />}
