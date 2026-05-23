@@ -20,7 +20,7 @@ function validatePasswordStrength(password: string) {
     return null;
 }
 
-type AuthStep = 'verify' | 'vault-choice' | 'unlock' | 'create';
+type AuthStep = 'verify' | 'unlock' | 'create';
 
 export default function AuthCard({ onLoginSuccess, toast }: any) {
     const [step, setStep] = useState<AuthStep>('verify');
@@ -33,11 +33,25 @@ export default function AuthCard({ onLoginSuccess, toast }: any) {
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState('Select an authentication method to continue.');
 
-    const moveToVaultChoice = (user: any) => {
+    const routeAfterAuth = async (user: any) => {
         setGoogleUser(user);
         setPassword('');
-        setStep('vault-choice');
-        setStatus('Account verified. Do you already have a vault for this account?');
+        try {
+            await loadVault(user.uid);
+            setStep('unlock');
+            setStatus('Vault found. Enter your Master Password to unlock.');
+        } catch (err: any) {
+            if (err.code === 'vault/not-found') {
+                setStep('create');
+                setStatus('No vault found for this account. Create your Master Password to start.');
+                return;
+            }
+            if (err.code === 'unavailable' || String(err.message || '').toLowerCase().includes('offline')) {
+                setError('Cannot reach vault service right now. Check internet, then try again.');
+                return;
+            }
+            setError(err.message || 'Could not verify vault status.');
+        }
     };
 
     const handleGoogleLogin = async () => {
@@ -45,7 +59,7 @@ export default function AuthCard({ onLoginSuccess, toast }: any) {
         setLoading(true); setError(null); setStatus('Opening Google sign-in...');
         try {
             const cred = await firebaseGoogleLogin();
-            moveToVaultChoice(cred.user);
+            await routeAfterAuth(cred.user);
         } catch (err: any) {
             setStatus(''); setError(err.message || 'Authentication failed.');
         } finally { setLoading(false); }
@@ -62,7 +76,7 @@ export default function AuthCard({ onLoginSuccess, toast }: any) {
                 ? await firebaseEmailLogin(email, emailPass)
                 : await firebaseEmailSignup(email, emailPass);
             if (authMode === 'email-signup') toast.success('Account created successfully!');
-            moveToVaultChoice(cred.user);
+            await routeAfterAuth(cred.user);
         } catch (err: any) {
             setStatus(''); setError(err.message || 'Authentication failed.');
         } finally { setLoading(false); }
@@ -132,7 +146,6 @@ export default function AuthCard({ onLoginSuccess, toast }: any) {
 
                 <h2 className="text-2xl font-bold text-center text-white mb-2 tracking-tight">
                     {step === 'verify' && 'Verify Account'}
-                    {step === 'vault-choice' && 'Vault Setup'}
                     {step === 'unlock' && 'Unlock Existing Vault'}
                     {step === 'create' && 'Create New Vault'}
                 </h2>
@@ -172,17 +185,6 @@ export default function AuthCard({ onLoginSuccess, toast }: any) {
                     </div>
                 )}
 
-                {step === 'vault-choice' && (
-                    <div className="space-y-3">
-                        <button type="button" onClick={() => { setError(null); setPassword(''); setStep('unlock'); setStatus('Enter your Master Password to unlock your existing vault.'); }} className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-primary text-white font-medium rounded-xl hover:bg-[#3182ce] transition-all border border-primary/50">
-                            <ArrowRight size={18} /> Unlock Existing Vault
-                        </button>
-                        <button type="button" onClick={() => { setError(null); setPassword(''); setStep('create'); setStatus('Create a strong Master Password for your new vault.'); }} className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-white/5 text-[#c9d1d9] border border-white/10 font-medium rounded-xl hover:bg-white/10 hover:border-white/20 transition-all">
-                            <UserPlus size={18} className="text-[#8b949e]" /> Create New Vault
-                        </button>
-                    </div>
-                )}
-
                 {step === 'unlock' && (
                     <form onSubmit={handleUnlock} autoComplete="off" className="space-y-5">
                         <div className="relative group">
@@ -193,7 +195,7 @@ export default function AuthCard({ onLoginSuccess, toast }: any) {
                             <button type="submit" className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-primary text-white font-medium rounded-xl hover:bg-[#3182ce] transition-all disabled:opacity-60 border border-primary/50" disabled={loading}>
                                 <ArrowRight size={18} /> {loading ? 'Working...' : 'Unlock Vault'}
                             </button>
-                            <button type="button" onClick={() => { setError(null); setStep('vault-choice'); setStatus('Account verified. Do you already have a vault for this account?'); }} className="w-full py-3 px-4 bg-white/5 text-[#c9d1d9] border border-white/10 rounded-xl hover:bg-white/10 transition-all">
+                            <button type="button" onClick={() => { setError(null); setPassword(''); setStep('verify'); setStatus('Select an authentication method to continue.'); }} className="w-full py-3 px-4 bg-white/5 text-[#c9d1d9] border border-white/10 rounded-xl hover:bg-white/10 transition-all">
                                 Back
                             </button>
                         </div>
@@ -210,7 +212,7 @@ export default function AuthCard({ onLoginSuccess, toast }: any) {
                             <button type="submit" className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-primary text-white font-medium rounded-xl hover:bg-[#3182ce] transition-all disabled:opacity-60 border border-primary/50" disabled={loading}>
                                 <UserPlus size={18} /> {loading ? 'Working...' : 'Create Vault'}
                             </button>
-                            <button type="button" onClick={() => { setError(null); setStep('vault-choice'); setStatus('Account verified. Do you already have a vault for this account?'); }} className="w-full py-3 px-4 bg-white/5 text-[#c9d1d9] border border-white/10 rounded-xl hover:bg-white/10 transition-all">
+                            <button type="button" onClick={() => { setError(null); setPassword(''); setStep('verify'); setStatus('Select an authentication method to continue.'); }} className="w-full py-3 px-4 bg-white/5 text-[#c9d1d9] border border-white/10 rounded-xl hover:bg-white/10 transition-all">
                                 Back
                             </button>
                         </div>
