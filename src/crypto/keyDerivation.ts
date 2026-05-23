@@ -40,26 +40,26 @@ export function generateServerKey() {
  * @param {Uint8Array} salt - 16-byte random salt
  * @returns {Promise<Uint8Array>} Derived K_user (32 bytes)
  */
-export async function deriveUserKey(masterPassword, salt) {
+export async function deriveUserKey(masterPassword: string, salt: Uint8Array) {
     try {
-        if (!window.argon2) {
+        if (!(window as any).argon2) {
             throw new Error("Argon2 library is not loaded. Please wait a moment.");
         }
-        const result = await window.argon2.hash({
+        const result = await (window as any).argon2.hash({
             pass: masterPassword,
             salt: salt,
             time: 3,
             mem: 65536,
             hashLen: 32,
             parallelism: 4,
-            type: window.argon2.ArgonType.Argon2id // protects against both side-channel and GPU cracking
+            type: (window as any).argon2.ArgonType.Argon2id // protects against both side-channel and GPU cracking
         });
 
         // result.hash is a Uint8Array
         const kUser = new Uint8Array(result.hash);
 
         return kUser;
-    } catch (err) {
+    } catch (err: any) {
         throw new Error('Key derivation failed: ' + err.message, { cause: err });
     }
 }
@@ -68,7 +68,7 @@ export async function deriveUserKey(masterPassword, salt) {
  * Securely clear a Uint8Array from memory.
  * @param {Uint8Array} buffer 
  */
-export function clearBuffer(buffer) {
+export function clearBuffer(buffer: any) {
     if (buffer instanceof Uint8Array || buffer instanceof ArrayBuffer) {
         new Uint8Array(buffer).fill(0);
     }

@@ -9,7 +9,7 @@
  * @param {Uint8Array} buffer 
  * @returns {string} Default base64 encoded string
  */
-export function bufferToBase64(buffer) {
+export function bufferToBase64(buffer: Uint8Array) {
     let binary = '';
     const len = buffer.byteLength;
     for (let i = 0; i < len; i++) {
@@ -23,7 +23,7 @@ export function bufferToBase64(buffer) {
  * @param {string} base64 
  * @returns {Uint8Array}
  */
-export function base64ToBuffer(base64) {
+export function base64ToBuffer(base64: string) {
     const binaryStr = window.atob(base64);
     const len = binaryStr.length;
     const bytes = new Uint8Array(len);

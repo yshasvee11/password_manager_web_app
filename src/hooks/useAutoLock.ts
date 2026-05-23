@@ -11,12 +11,12 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 const LOCK_TIMEOUT_MS = 5 * 60 * 1000;    // 5 minutes
 const WARNING_BEFORE_MS = 60 * 1000;       // warn 60s before lock
 
-export default function useAutoLock(onLock) {
-    const timerRef = useRef(null);
-    const warningTimerRef = useRef(null);
+export default function useAutoLock(onLock: () => void) {
+    const timerRef = useRef<any>(null);
+    const warningTimerRef = useRef<any>(null);
     const [showWarning, setShowWarning] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(60);
-    const countdownRef = useRef(null);
+    const countdownRef = useRef<any>(null);
 
     const clearAllTimers = useCallback(() => {
         if (timerRef.current) clearTimeout(timerRef.current);

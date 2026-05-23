@@ -29,3 +29,6 @@ dist-ssr
 .env.local
 .env.*.local
 src/firebase/config.js
+
+# Firebase local cache
+.firebase/

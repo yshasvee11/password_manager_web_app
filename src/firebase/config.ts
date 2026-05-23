@@ -14,7 +14,7 @@ const firebaseConfig = {
 
 const hasConfig = firebaseConfig.apiKey && firebaseConfig.projectId;
 
-let app, db, auth, googleProvider;
+let app: any, db: any, auth: any, googleProvider: any;
 
 if (hasConfig) {
     app = initializeApp(firebaseConfig);

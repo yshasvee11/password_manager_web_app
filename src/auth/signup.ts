@@ -1,9 +1,9 @@
-﻿import { generateSalt, generateServerKey, deriveUserKey, clearBuffer } from '../crypto/keyDerivation.js';
+import { generateSalt, generateServerKey, deriveUserKey, clearBuffer } from '../crypto/keyDerivation.js';
 import { computeFinalKey } from '../crypto/hash.js';
 import { generateIV, encryptVault, encryptBytes } from '../crypto/encryption.js';
 import { bufferToBase64 } from '../utils/base64.js';
 
-export async function performSignupCryptoFlow(masterPassword) {
+export async function performSignupCryptoFlow(masterPassword: string) {
     try {
         const salt = generateSalt();
         const serverKey = generateServerKey();

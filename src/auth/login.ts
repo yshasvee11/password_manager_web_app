@@ -1,9 +1,17 @@
-﻿import { deriveUserKey, clearBuffer } from '../crypto/keyDerivation.js';
+import { deriveUserKey, clearBuffer } from '../crypto/keyDerivation.js';
 import { computeFinalKey } from '../crypto/hash.js';
 import { decryptVault, decryptBytes } from '../crypto/encryption.js';
 import { base64ToBuffer } from '../utils/base64.js';
 
-export async function performLoginCryptoFlow(masterPassword, firebaseData) {
+type FirebaseVaultPayload = {
+    salt: string;
+    wrappedServerKey: string;
+    wrappedServerKeyIv: string;
+    iv: string;
+    encryptedVault: string;
+};
+
+export async function performLoginCryptoFlow(masterPassword: string, firebaseData: FirebaseVaultPayload) {
     try {
         const salt = base64ToBuffer(firebaseData.salt);
         const wrappedServerKey = base64ToBuffer(firebaseData.wrappedServerKey);

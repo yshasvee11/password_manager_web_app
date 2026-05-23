@@ -11,7 +11,7 @@
  * @param {Uint8Array} serverKey - random high-entropy key from server (32 bytes)
  * @returns {Promise<Uint8Array>} K_final (32 bytes)
  */
-export async function computeFinalKey(kUser, serverKey) {
+export async function computeFinalKey(kUser: Uint8Array, serverKey: Uint8Array) {
   if (!(kUser instanceof Uint8Array) || !(serverKey instanceof Uint8Array)) {
     throw new Error('Keys must be Uint8Arrays');
   }

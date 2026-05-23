@@ -36,7 +36,7 @@ export async function firebaseLogout() {
  * @param {string} userId
  * @param {{ salt, wrappedServerKey, wrappedServerKeyIv, iv, encryptedVault }} cryptoPayload - all base64 strings
  */
-export async function saveVault(userId, cryptoPayload) {
+export async function saveVault(userId: string, cryptoPayload: any) {
     const timestamp = Date.now();
 
     const firestorePayload = {
@@ -61,7 +61,7 @@ export async function saveVault(userId, cryptoPayload) {
  * @param {string} userId
  * @returns {Promise<{ salt, wrappedServerKey, wrappedServerKeyIv, iv, encryptedVault, updatedAt }>}
  */
-export async function loadVault(userId) {
+export async function loadVault(userId: string) {
     if (!isFirebaseConfigured || !auth.currentUser) {
         throw vaultError('vault/not-authenticated', 'Not authenticated. Cannot load vault.');
     }
